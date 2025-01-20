@@ -37,12 +37,10 @@ describe('style-macro', () => {
     });
 
     expect(css).toMatchInlineSnapshot(`
-      ".\\.:not(#a#b) { all: revert-layer }
-
-      @layer _.a, _.b, _.c, UNSAFE_overrides;
+      "@layer _.a, _.b, _.c;
 
       @layer _.b {
-        .D-13alit4c {
+        .A-13alit4c {
           &:first-child {
             margin-top: 0.25rem;
           }
@@ -51,7 +49,7 @@ describe('style-macro', () => {
 
       @layer _.c.e {
         @media (min-width: 1024px) {
-          .D-13alit4ed {
+          .A-13alit4ed {
             &:first-child {
               margin-top: 0.5rem;
             }
@@ -61,7 +59,7 @@ describe('style-macro', () => {
 
       "
     `);
-    expect(js).toMatchInlineSnapshot('" . D-13alit4c D-13alit4ed"');
+    expect(js).toMatchInlineSnapshot('" A-13alit4c A-13alit4ed"');
   });
 
   it('should support self references', () => {
@@ -72,53 +70,51 @@ describe('style-macro', () => {
     });
 
     expect(css).toMatchInlineSnapshot(`
-      ".\\.:not(#a#b) { all: revert-layer }
-
-      @layer _.a, _.b, UNSAFE_overrides;
+      "@layer _.a, _.b;
 
       @layer _.a {
-        .tc {
+        .uc {
           border-top-width: 2px;
         }
 
 
-        .uc {
+        .vc {
           border-bottom-width: 2px;
         }
 
 
-        .r-375tox {
-          border-inline-start-width: var(--r);
+        .s-375toy {
+          border-inline-start-width: var(--s);
         }
 
 
-        .sc {
+        .tc {
           border-inline-end-width: 2px;
         }
 
 
-        .F-375tnp {
-          padding-inline-start: var(--F);
+        .C-375tnm {
+          padding-inline-start: var(--C);
         }
 
 
-        .GI {
-          padding-inline-end: calc(var(--j, var(--n)) * 3 / 8);
+        .DI {
+          padding-inline-end: calc(var(--k, var(--o)) * 3 / 8);
         }
 
 
-        .k-4s570k {
-          width: calc(200px - var(--r) - var(--F));
+        .l-4s570k {
+          width: calc(200px - var(--s) - var(--C));
         }
 
 
-        .-_375tox_r-c {
-          --r: 2px;
+        .-_375toy_s-c {
+          --s: 2px;
         }
 
 
-        .-_375tnp_F-I {
-          --F: calc(var(--j, var(--n)) * 3 / 8);
+        .-_375tnm_C-I {
+          --C: calc(var(--k, var(--o)) * 3 / 8);
         }
       }
 
