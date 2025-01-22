@@ -337,8 +337,6 @@ const treeRowFocusIndicator = raw(`
   }`
 );
 
-let TreeItemContext = createContext<{hasChildItems?: boolean}>({});
-
 export const TreeViewItem = <T extends object>(props: TreeViewItemProps<T>) => {
   let {
     href
@@ -347,14 +345,12 @@ export const TreeViewItem = <T extends object>(props: TreeViewItemProps<T>) => {
 
   return (
     // TODO right now all the tree rows have the various data attributes applied on their dom nodes, should they? Doesn't feel very useful
-    <TreeItemContext.Provider value={{hasChildItems: !!props.childItems}}>
-      <UNSTABLE_TreeItem
-        {...props}
-        className={(renderProps) => treeRow({
-          ...renderProps,
-          isLink: !!href, isEmphasized
-        }) + (renderProps.isFocusVisible && !isDetached ? ' ' + treeRowFocusIndicator : '')} />
-    </TreeItemContext.Provider>
+    <UNSTABLE_TreeItem
+      {...props}
+      className={(renderProps) => treeRow({
+        ...renderProps,
+        isLink: !!href, isEmphasized
+      }) + (renderProps.isFocusVisible && !isDetached ? ' ' + treeRowFocusIndicator : '')} />
   );
 };
 
@@ -363,7 +359,6 @@ export const TreeItemContent = (props: Omit<TreeItemContentProps, 'children'> & 
     children
   } = props;
   let {isDetached, isEmphasized} = useContext(InternalTreeContext);
-  let {hasChildItems} = useContext(TreeItemContext);
 
   return (
     <UNSTABLE_TreeItemContent>
@@ -390,8 +385,8 @@ export const TreeItemContent = (props: Omit<TreeItemContentProps, 'children'> & 
                 gridArea: 'level-padding',
                 width: '[calc(calc(var(--tree-item-level, 0) - 1) * var(--indent))]'
               })} />
-            {/* TODO: revisit when we do async loading, at the moment hasChildItems will only cause the chevron to be rendered, no aria/data attributes indicating the row's expandability are added */}
-            {(hasChildRows || hasChildItems) && <ExpandableRowChevron isDisabled={isDisabled} isExpanded={isExpanded} />}
+            {/* TODO: revisit when we do async loading, at the moment hasChildRows will only cause the chevron to be rendered, no aria/data attributes indicating the row's expandability are added */}
+            {hasChildRows && <ExpandableRowChevron isDisabled={isDisabled} isExpanded={isExpanded} />}
             <Provider
               values={[
                 [TextContext, {styles: treeContent}],
@@ -400,8 +395,7 @@ export const TreeItemContent = (props: Omit<TreeItemContentProps, 'children'> & 
                   styles: style({size: fontRelative(20), flexShrink: 0})
                 }],
                 [ActionButtonGroupContext, {styles: treeActions}],
-                [ActionMenuContext, {styles: treeActionMenu, isQuiet: true, 'aria-label': 'Actions'}],
-                [TreeItemContext, {}]
+                [ActionMenuContext, {styles: treeActionMenu, isQuiet: true, 'aria-label': 'Actions'}]
               ]}>
               {children}
             </Provider>
