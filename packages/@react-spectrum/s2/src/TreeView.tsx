@@ -95,7 +95,6 @@ const tree = style({
 
 function TreeView(props: TreeViewProps, ref: DOMRef<HTMLDivElement>) {
   let {children, isDetached, isEmphasized} = props;
-  isEmphasized = !isDetached;
 
   let renderer;
   if (typeof children === 'function') {
@@ -270,7 +269,7 @@ const treeCellGrid = style({
     isDetached: 1
   },
   borderRadius: {
-    isDetached: '[6px]'
+    isDetached: 'default'
   },
   borderStyle: 'solid'
 });
@@ -346,7 +345,6 @@ export const TreeViewItem = <T extends object>(props: TreeViewItemProps<T>) => {
   let {isDetached, isEmphasized} = useContext(InternalTreeContext);
 
   return (
-    // TODO right now all the tree rows have the various data attributes applied on their dom nodes, should they? Doesn't feel very useful
     <TreeItemContext.Provider value={{hasChildItems: !!props.childItems}}>
       <UNSTABLE_TreeItem
         {...props}
